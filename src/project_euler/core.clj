@@ -4,4 +4,4 @@
 
 (defn -main
   [& args]
-  (p/p30))
+  (println (p/p30)))

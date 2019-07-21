@@ -1,9 +1,11 @@
 (ns project-euler.problems
   (:import (java.lang Math)))
 
+
 (defn prime?
   [n]
   (every? false? (map #(= 0 (mod n %)) (range 2 (Math/sqrt n)))))
+
 
 (defn petersburg
   []
@@ -13,16 +15,16 @@
       payoff)))
 
 
-(defn p30
-  "Find the sum of all the numbers that can be written as the sum of fifth powers of their digits."
-  []
-  (reduce + 
-          (take 6 
-                (filter fifth-pow? (range)))))
+(defn digits [n]
+  (->> n
+       str
+       (map (comp read-string str))))
 
-(defn fifth-pow?
-  [n]
-  (if (and (= n (sum-fifth-pow n)) (> n 1)) true))
+(defn pow
+  "Returns the result of n^x"
+  [n x]
+  (reduce * (repeat x n)))
+
 
 (defn sum-fifth-pow
   [n]
@@ -31,19 +33,23 @@
        (map #(pow % 5))
        (reduce +)))
 
-(defn digits [n]
-  (->> n
-       str
-       (map (comp read-string str))))
 
-(defn digits2 [n]
+(defn fifth-pow?
+  [n]
+  (if (and (= n (sum-fifth-pow n)) (> n 1)) true))
+
+
+(defn digits-two [n]
   (->> n
        (iterate #(quot % 10))
        (take-while pos?)
        (mapv #(mod % 10))
        rseq))
 
-(defn pow
-  "Returns the result of n^x"
-  [n x]
-  (reduce * (repeat x n)))
+
+(defn p30
+  "Find the sum of all the numbers that can be written as the sum of fifth powers of their digits."
+  []
+  (reduce +
+          (take 6
+                (filter fifth-pow? (range)))))
